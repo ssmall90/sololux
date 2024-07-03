@@ -81,6 +81,8 @@ const getPlaces = async (query, city, country) => {
  * @returns {Array} - The updated list of items.
  */
 const processValidItems = async (validItems) => {
+
+const defaultImagePath = '/activity-card-resort.jpg';
   for (const item of validItems) {
     try {
       const places = await getPlaces(item.name, item.city, item.country);
@@ -97,7 +99,7 @@ const processValidItems = async (validItems) => {
         if (place.photos && place.photos.length > 0) {
           item.photos = [getPhotoUrl(place.photos[0].photo_reference)];
         } else {
-          item.photos = [`http://localhost:5000/static/activity-card-resort.jpg`]; // Default photo URL
+          item.photos = [defaultImagePath]; // Default photo URL
         }
       } else {
         // Set default values if no places found
@@ -105,7 +107,7 @@ const processValidItems = async (validItems) => {
         item.website = item.website || createGoogleSearchLink(item.name);
         item.rating = 0; 
         item.place_id = 'N/A'; 
-        item.photos = [`http://localhost:5000/static/activity-card-resort.jpg`]; 
+        item.photos = [defaultImagePath]; 
       }
     } catch (error) {
       console.error("Error:", error);
@@ -114,7 +116,7 @@ const processValidItems = async (validItems) => {
       item.website = item.website || createGoogleSearchLink(item.name);
       item.rating = 0; 
       item.place_id = 'N/A'; 
-      item.photos = [`http://localhost:5000/static/activity-card-resort.jpg`]; 
+      item.photos = [defaultImagePath]; 
     }
   }
   return validItems;
