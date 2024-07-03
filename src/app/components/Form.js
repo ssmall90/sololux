@@ -164,7 +164,7 @@ const Form = ({ updateActivities }) => {
     const getResponse = () => {
       setSubmitLoading(true);
       axios
-        .post("http://localhost:5000/chat", { prompt })
+        .post("/api/chat", { prompt })
         .then((res) => {
           try {
             const responseContent = res.data;
