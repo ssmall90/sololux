@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🗺️ SoloLux Travel Planner
 
-## Getting Started
+Welcome to the SoloLux Travel Planner app! This Next.js application helps travelers discover and plan exciting activities for their trips. Users can select a destination, trip dates, and preferences to receive personalized activity suggestions.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Personalized Activity Suggestions**: Receive customized activity ideas based on your selected location, trip dates, duration, and preferences.
+- **AI-Powered Recommendations**: Utilizes AI to generate unique and relevant activity suggestions.
+- **Google Maps Integration**: Integrates with the Google Maps API to fetch detailed information about activity locations.
+- **Activity Database**: New locations from the API are stored in a MongoDB database, building a comprehensive activity database.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Next.js 14.2.3**: The app is built using the Next.js framework for server-side rendering and static site generation.
+- **React**: Utilizes React for building interactive user interfaces.
+- **HTML and CSS**: Frontend styling and layout are done using HTML and CSS.
+- **Google Maps API**: Integrates with Google Maps API for location data.
+- **MongoDB**: Stores activity locations in a MongoDB database to build a repository of activity locations.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Hosting
 
-## Learn More
+The SoloLux Travel Planner app is hosted on Vercel. You can access it at [sololux-travel-planner.vercel.app](https://travel-planner-app-rouge.vercel.app/).
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! If you'd like to contribute to the SoloLux Travel Planner app, feel free to submit a pull request with your changes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Feedback
 
-## Deploy on Vercel
+We'd love to hear your feedback! If you have any suggestions, ideas, or bug reports, please open an issue on GitHub.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+🚀 Happy Exploring! 🌍
