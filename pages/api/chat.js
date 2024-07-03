@@ -1,9 +1,7 @@
-import { connectToDatabase } from '../../utils/mongodb';
-
+const { connectToDatabase } = require('../../src/utils/mongodb');
 const OpenAI = require("openai");
-const path = require("path");
-const mongoose = require("mongoose");
 const axios = require("axios");
+const Activity = require('../../src/api/activity'); // Correct import
 
 const googleApiKey = process.env.GOOGLE_API_KEY;
 
@@ -126,21 +124,21 @@ const processValidItems = async (validItems) => {
  * Saves valid items to the MongoDB database using upsert to avoid duplicates.
  * @param {Array} validItems - The list of valid items to save.
  */
-const saveValidItems = async (validItems) => {
-  await connectToDatabase();
-  try {
-    for (const item of validItems) {
-      await Activity.findOneAndUpdate(
-        { place_id: item.place_id }, // Use place_id to ensure uniqueness
-        item,
-        { upsert: true, new: true, setDefaultsOnInsert: true } // Upsert option
-      );
+async function saveValidItems(validItems) {
+    try {
+      const { db } = await connectToDatabase(); 
+      for (const item of validItems) {
+        await db.collection('activities').findOneAndUpdate(
+          { place_id: item.place_id },
+          { $set: item },
+          { upsert: true }
+        );
+      }
+      console.log("Items saved to database successfully.");
+    } catch (error) {
+      console.error("Error saving items to database:", error);
     }
-    console.log("Items saved to database successfully.");
-  } catch (error) {
-    console.error("Error saving items to database:", error);
   }
-};
 
 
 /**
@@ -149,56 +147,49 @@ const saveValidItems = async (validItems) => {
  * @param {Response} res - The response object.
  */
 export default async function handler(req, res) {
-
-  console.log("Handler called");
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { prompt } = req.body;
-  console.log("Prompt received:", prompt);
-
-  try {
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
-      model: "gpt-3.5-turbo",
-    });
-
-    const content = completion.choices[0].message.content;
-    console.log("Completion received:", content);
-    
-    let items;
+    console.log("Handler called");
+  
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
+  
+    const { prompt } = req.body;
+    console.log("Prompt received:", prompt);
+  
     try {
-      items = JSON.parse(content);
-    } catch (jsonError) {
-      console.error("Error parsing JSON:", jsonError);
-      return res.status(500).json({ error: "Failed to parse JSON response from OpenAI" });
-    }
-
-    const validItems = [];
-    for (const item of items) {
-      if (item.website && (await isValidURL(item.website))) {
-        validItems.push(item);
-      } else {
-        item.website = createGoogleSearchLink(item.name);
-        validItems.push(item);
+      const completion = await openai.chat.completions.create({
+        messages: [{ role: "user", content: prompt }],
+        model: "gpt-3.5-turbo",
+      });
+  
+      const content = completion.choices[0].message.content;
+      console.log("Completion received:", content);
+  
+      let items;
+      try {
+        items = JSON.parse(content);
+        console.log("Parsed items:", items);
+      } catch (jsonError) {
+        console.error("Error parsing JSON:", jsonError);
+        return res.status(500).json({ error: "Failed to parse JSON response from OpenAI" });
       }
+  
+      const validItems = [];
+      for (const item of items) {
+        if (item.website && (await isValidURL(item.website))) {
+          validItems.push(item);
+        } else {
+          item.website = createGoogleSearchLink(item.name);
+          validItems.push(item);
+        }
+      }
+  
+      await processValidItems(validItems);
+      await saveValidItems(validItems);
+  
+      return res.json(validItems);
+    } catch (error) {
+      console.error("Error creating completion:", error);
+      return res.status(500).json({ error: "Failed to create completion" });
     }
-
-    await processValidItems(validItems);
-    await saveValidItems(validItems);
-
-    return res.json(validItems);
-  } catch (error) {
-    console.error("Error creating completion:", error);
-    return res.status(500).json({ error: "Failed to create completion" });
   }
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}

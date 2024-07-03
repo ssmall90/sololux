@@ -11,6 +11,11 @@ const ActivityCard = ({
     address,
     photos,}) => {
 
+    const defaultImage = '/activity-card-resort.jpg';
+
+    console.log("Photos array: ", photos);
+    console.log("Default image path: ", defaultImage);
+
     return(
         <Box border={"solid 1px white"} 
         bg={'#001F3F'}
@@ -29,14 +34,26 @@ const ActivityCard = ({
             </Box>
           </Box>
           <Box  h={'200px'} position={'relative'} display="flex" flexWrap="wrap" justifyContent="center" gap={4} overflow="hidden" >
-            {photos?.map((photoUrl, index) => (
-              <Image 
-              border={'solid 2px #F8D47A'}
-              borderRadius={'20px'}
-              boxSize={'100%'}
-              objectFit='cover' 
-              src={photoUrl || `http://localhost:5000/static/activity-card-resort.jpg`} alt={`Image ${index + 1}`} key={index} />
-            ))}
+          {photos && photos.length > 0 ? photos.map((photoUrl, index) => (
+          <Image
+            key={index}
+            border={'solid 2px #F8D47A'}
+            borderRadius={'20px'}
+            boxSize={'100%'}
+            objectFit='cover'
+            src={photoUrl}
+            alt={`Image ${index + 1}`}
+          />
+        )) : (
+          <Image
+            border={'solid 2px #F8D47A'}
+            borderRadius={'20px'}
+            boxSize={'100%'}
+            objectFit='cover'
+            src={defaultImage}
+            alt="Default Image"
+          />
+        )}
               <Box justifyContent={'center'} p={'10px'} alignItems={'center'} display={'flex'} position={'absolute'} bg={'#002B55'} w={'30%'} h={'20%'} bottom={'0'} right={'-3'} borderLeft={'solid 1px #F8D47A'} borderTop={'solid 2px #F8D47A'} borderTopLeftRadius={'10px'} borderTopRightRadius={'10px'} >
               <Box textAlign={'center'}  fontSize={{base: '1em'}} color={"white"}>{rating > 0 ? <Box mr={'5px'} mt={'3px'} display={'flex'}>{rating}<Icon ml={'4px'} as={GoStarFill} w={"1em"} h={"1em"} color={"#F8D47A"}/></Box> : (<Text pt={{base:'0px', md: '2px'}} mr={{base: '0px', md: '7px', lg: '7px'}}>No Votes</Text>)}</Box>
               </Box>
