@@ -90,8 +90,6 @@ const Form = ({ updateActivities }) => {
       if (selectedCity !== "" && numberOfAdventures > 0) {
         handlePrompt(updatedPreferencesString);
       }
-      console.log("Updated Preference String:", updatedPreferencesString);
-      console.log("Preferences:", preferences);
     }, [selectedCity, numberOfAdventures, preferences]);
   
   

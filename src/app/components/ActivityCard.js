@@ -13,9 +13,6 @@ const ActivityCard = ({
 
     const defaultImage = '/activity-card-resort.jpg';
 
-    console.log("Photos array: ", photos);
-    console.log("Default image path: ", defaultImage);
-
     return(
         <Box border={"solid 1px white"} 
         bg={'#001F3F'}

@@ -136,7 +136,6 @@ async function saveValidItems(validItems) {
           { upsert: true }
         );
       }
-      console.log("Items saved to database successfully.");
     } catch (error) {
       console.error("Error saving items to database:", error);
     }
@@ -149,14 +148,12 @@ async function saveValidItems(validItems) {
  * @param {Response} res - The response object.
  */
 export default async function handler(req, res) {
-    console.log("Handler called");
   
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Method not allowed' });
     }
   
     const { prompt } = req.body;
-    console.log("Prompt received:", prompt);
   
     try {
       const completion = await openai.chat.completions.create({
@@ -165,12 +162,10 @@ export default async function handler(req, res) {
       });
   
       const content = completion.choices[0].message.content;
-      console.log("Completion received:", content);
   
       let items;
       try {
         items = JSON.parse(content);
-        console.log("Parsed items:", items);
       } catch (jsonError) {
         console.error("Error parsing JSON:", jsonError);
         return res.status(500).json({ error: "Failed to parse JSON response from OpenAI" });
