@@ -19,7 +19,7 @@ Welcome to the SoloLux Travel Planner app! This Next.js application helps travel
 
 ## Hosting
 
-The SoloLux Travel Planner app is hosted on Vercel. You can access it at [sololux-travel-planner.vercel.app](https://travel-planner-app-rouge.vercel.app/).
+The SoloLux Travel Planner app is hosted on Vercel. You can access it at [sololux-travel-planner.vercel.app](https://sololux.vercel.app/).
 
 ## Contributing
 
